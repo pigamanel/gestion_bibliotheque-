@@ -104,4 +104,31 @@ public class userService {
         
         return rs;
     }
+
+    public users getUserById(int id) {
+        ResultSet rs = null;
+        connexionBase cb = new connexionBase();
+        cb.conn();
+        
+        String req = "SELECT * FROM users WHERE id='" + id + "'";
+        
+        try {
+            rs = cb.st.executeQuery(req);
+            if (rs.next()) {
+                return new users(
+                    rs.getInt("id"),
+                    rs.getString("nom"),
+                    rs.getString("password"),
+                    rs.getString("email"),
+                    rs.getString("role")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur sur la requête de récupération de l'utilisateur");
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+
 }

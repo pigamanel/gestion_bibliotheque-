@@ -1,5 +1,6 @@
 package Controller;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -135,8 +136,17 @@ public class ServletUsers extends HttpServlet {
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        // Retrieve user data and display the edit form
-        // Implementation can be added as needed
-    }
+    	int id = Integer.parseInt(request.getParameter("id"));
+        users existingUser = userService.getUserById(id); // Méthode ajoutée dans userService
+        request.setAttribute("user", existingUser);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user-form.jsp"); // JSP pour le formulaire de modification
+        try {
+			dispatcher.forward(request, response);
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}    }
 }
